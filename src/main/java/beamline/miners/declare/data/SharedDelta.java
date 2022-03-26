@@ -1,5 +1,6 @@
 package beamline.miners.declare.data;
 
+import java.io.Serializable;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -11,8 +12,12 @@ import com.google.common.collect.Sets;
  * 
  * @author Andrea Burattin
  */
-public class SharedDelta {
+public class SharedDelta implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6076218538770031353L;
 	public int currentBucket = 0;
 	public int budget = -1;
 	private Set<LossyCountingBudget<?>> sharedItems;

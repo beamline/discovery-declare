@@ -1,5 +1,6 @@
 package beamline.miners.declare.events.lossycounting;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,9 @@ import beamline.miners.declare.events.lossycounting.constraints.Response;
 import beamline.miners.declare.events.lossycounting.constraints.Succession;
 import beamline.miners.declare.model.DeclareModel;
 
-public class LCReplayer {
+public class LCReplayer implements Serializable {
 
+	private static final long serialVersionUID = -3986620640690070694L;
 	List<LCTemplateReplayer> replayers = new ArrayList<LCTemplateReplayer>();
 	
 	public LCReplayer() {

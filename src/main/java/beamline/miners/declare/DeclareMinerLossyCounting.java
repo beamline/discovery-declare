@@ -1,16 +1,15 @@
 package beamline.miners.declare;
 
-import org.deckfour.xes.extension.std.XConceptExtension;
-import org.deckfour.xes.model.XTrace;
-
+import beamline.events.BEvent;
 import beamline.miners.declare.events.lossycounting.LCReplayer;
 import beamline.miners.declare.model.DeclareModel;
 import beamline.miners.declare.model.SimplifiedDeclareModel;
 import beamline.miners.declare.view.DeclareModelView;
 import beamline.models.algorithms.StreamMiningAlgorithm;
 
-public class DeclareMinerLossyCounting extends StreamMiningAlgorithm<XTrace, DeclareModelView> {
+public class DeclareMinerLossyCounting extends StreamMiningAlgorithm<DeclareModelView> {
 
+	private static final long serialVersionUID = 4201872472447434357L;
 	// configuration variables
 	private int eventsReceived = 0;
 	private double maximalError = 0.005;
@@ -18,6 +17,7 @@ public class DeclareMinerLossyCounting extends StreamMiningAlgorithm<XTrace, Dec
 	private int bucketWidth;
 	
 	private int constraintsToShow = 10;
+	private int modelRefreshRate = 10;
 	
 	public DeclareMinerLossyCounting(double maximalError, int constraintsToShow) {
 		setMaximalError(maximalError);
@@ -32,11 +32,16 @@ public class DeclareMinerLossyCounting extends StreamMiningAlgorithm<XTrace, Dec
 	public void setConstraintsToShow(int constraintsToShow) {
 		this.constraintsToShow = constraintsToShow;
 	}
+	
+	public DeclareMinerLossyCounting setModelRefreshRate(int modelRefreshRate) {
+		this.modelRefreshRate = modelRefreshRate;
+		return this;
+	}
 
 	@Override
-	public DeclareModelView ingest(XTrace event) {
-		String caseID = XConceptExtension.instance().extractName(event);
-		String activityName = XConceptExtension.instance().extractName(event.get(0));
+	public DeclareModelView ingest(BEvent event) {
+		String caseID = event.getTraceName();
+		String activityName = event.getEventName();
 		
 		// statistics update
 		eventsReceived++;
@@ -52,7 +57,11 @@ public class DeclareMinerLossyCounting extends StreamMiningAlgorithm<XTrace, Dec
 		}
 
 		// incrementally update the model
-		return getModel();
+		if (getProcessedEvents() % modelRefreshRate == 0) {
+			return getModel();
+		}
+		
+		return null;
 	}
 
 	public DeclareModelView getModel() {

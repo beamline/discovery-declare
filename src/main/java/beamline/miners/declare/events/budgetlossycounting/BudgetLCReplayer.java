@@ -1,5 +1,6 @@
 package beamline.miners.declare.events.budgetlossycounting;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,9 @@ import beamline.miners.declare.events.budgetlossycounting.constraints.Response;
 import beamline.miners.declare.events.budgetlossycounting.constraints.Succession;
 import beamline.miners.declare.model.DeclareModel;
 
-public class BudgetLCReplayer {
+public class BudgetLCReplayer implements Serializable {
 	
+	private static final long serialVersionUID = -4112436365856930500L;
 	List<BudgetLCTemplateReplayer> replayers = new ArrayList<BudgetLCTemplateReplayer>();
 	
 	public BudgetLCReplayer(int budget) {

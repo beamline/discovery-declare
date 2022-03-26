@@ -1,5 +1,6 @@
 package beamline.miners.declare.events.lossycounting.constraints;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,8 +10,9 @@ import beamline.miners.declare.data.LossyCounting;
 import beamline.miners.declare.events.lossycounting.LCTemplateReplayer;
 import beamline.miners.declare.model.DeclareModel;
 
-public class AlternatePrecedence implements LCTemplateReplayer {
+public class AlternatePrecedence implements LCTemplateReplayer, Serializable {
 
+	private static final long serialVersionUID = -7396523781070648084L;
 	private Set<String> activityLabelsAltPrecedence = Sets.<String>newConcurrentHashSet();
 	private LossyCounting<ConcurrentHashMap<String, Integer>> activityLabelsCounterAltPrecedence = new LossyCounting<ConcurrentHashMap<String, Integer>>();
 	private LossyCounting<ConcurrentHashMap<String, ConcurrentHashMap<String, Integer>>> fulfilledConstraintsPerTraceAlt = new LossyCounting<ConcurrentHashMap<String, ConcurrentHashMap<String, Integer>>>();

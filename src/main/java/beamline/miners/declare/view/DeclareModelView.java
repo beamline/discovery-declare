@@ -12,14 +12,17 @@ import beamline.miners.declare.model.SimplifiedDeclareModel;
 import beamline.miners.declare.model.SimplifiedDeclareModel.RELATION;
 import beamline.models.responses.GraphvizResponse;
 
-public class DeclareModelView extends Dot implements GraphvizResponse {
+public class DeclareModelView extends GraphvizResponse {
 
+	private static final long serialVersionUID = -4397437169497156753L;
+	private Dot dotModel;
 	private SimplifiedDeclareModel model;
-	Map<String, DotNode> activityToNode;
+	private Map<String, DotNode> activityToNode;
 	
 	public DeclareModelView(SimplifiedDeclareModel model) {
+		this.dotModel = new Dot();
 		this.model = model;
-		this.activityToNode = new HashMap<String, DotNode>();
+		this.activityToNode = new HashMap<>();
 		
 		realize();
 	}
@@ -33,7 +36,7 @@ public class DeclareModelView extends Dot implements GraphvizResponse {
 	public DotNode getNodeIfNeeded(String activity) {
 		if (!activityToNode.containsKey(activity)) {
 			DeclareActivity node = new DeclareActivity(activity);
-			addNode(node);
+			dotModel.addNode(node);
 			activityToNode.put(activity, node);
 		}
 		return activityToNode.get(activity);
@@ -44,12 +47,12 @@ public class DeclareModelView extends Dot implements GraphvizResponse {
 		DotNode targetNode = getNodeIfNeeded(target);
 		DotEdge edge = DeclareRelationsFactory.getByType(sourceNode, targetNode, relation);
 		if (edge != null) {
-			addEdge(edge);
+			dotModel.addEdge(edge);
 		}
 	}
 
 	@Override
 	public Dot generateDot() {
-		return this;
+		return dotModel;
 	}
 }

@@ -1,5 +1,6 @@
 package beamline.miners.declare.events.budgetlossycounting.constraints;
 
+import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 
 import beamline.miners.declare.data.LossyCountingBudget;
@@ -7,8 +8,12 @@ import beamline.miners.declare.data.SharedDelta;
 import beamline.miners.declare.events.budgetlossycounting.BudgetLCTemplateReplayer;
 import beamline.miners.declare.model.DeclareModel;
 
-public class Response implements BudgetLCTemplateReplayer {
+public class Response implements BudgetLCTemplateReplayer, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2344351214906758930L;
 	private SharedDelta delta = new SharedDelta();
 	private LossyCountingBudget<String> activityLabelsResponse = null;
 	private LossyCountingBudget<ConcurrentHashMap<String, Integer>> activityLabelsCounterResponse = null;
